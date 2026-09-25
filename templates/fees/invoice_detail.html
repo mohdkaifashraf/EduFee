@@ -1,0 +1,172 @@
+{% extends "base.html" %}
+
+{% block title %}{{ invoice.invoice_number }}{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+
+    <div>
+        <h1>{{ invoice.invoice_number }}</h1>
+        <p>Student fee invoice</p>
+    </div>
+
+    <a
+        href="{% url 'invoice_list' %}"
+        class="btn btn-secondary"
+    >
+        Back
+    </a>
+
+</div>
+
+
+<div class="detail-grid">
+
+    <div class="card">
+
+        <h2>Invoice Information</h2>
+
+        <div class="detail-row">
+            <span>Invoice Number</span>
+            <strong>
+                {{ invoice.invoice_number }}
+            </strong>
+        </div>
+
+        <div class="detail-row">
+            <span>Status</span>
+            <strong>
+                {{ invoice.get_status_display }}
+            </strong>
+        </div>
+
+        <div class="detail-row">
+            <span>Due Date</span>
+            <strong>
+                {{ invoice.due_date|date:"d M Y" }}
+            </strong>
+        </div>
+
+        <div class="detail-row">
+            <span>Created</span>
+            <strong>
+                {{ invoice.created_at|date:"d M Y, h:i A" }}
+            </strong>
+        </div>
+
+    </div>
+
+
+    <div class="card">
+
+        <h2>Student</h2>
+
+        <div class="detail-row">
+            <span>Student ID</span>
+            <strong>
+                {{ invoice.student.student_id }}
+            </strong>
+        </div>
+
+        <div class="detail-row">
+            <span>Name</span>
+            <strong>
+                {{ invoice.student.name }}
+            </strong>
+        </div>
+
+        <div class="detail-row">
+            <span>Course</span>
+            <strong>
+                {{ invoice.student.course }}
+            </strong>
+        </div>
+
+        <div class="detail-row">
+            <span>Semester</span>
+            <strong>
+                {{ invoice.student.semester }}
+            </strong>
+        </div>
+
+    </div>
+
+
+    <div class="card">
+
+        <h2>Fee Breakdown</h2>
+
+        <div class="table-wrapper">
+
+            <table class="data-table">
+
+                <thead>
+                    <tr>
+                        <th>Fee Head</th>
+                        <th>Amount</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    {% for component in components %}
+
+                    <tr>
+
+                        <td>
+                            {{ component.fee_head.name }}
+                        </td>
+
+                        <td>
+                            ₹ {{ component.amount|floatformat:2 }}
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+
+    <div class="card">
+
+        <h2>Financial Summary</h2>
+
+        <div class="detail-row">
+            <span>Gross Amount</span>
+            <strong>
+                ₹ {{ invoice.gross_amount|floatformat:2 }}
+            </strong>
+        </div>
+
+        <div class="detail-row">
+            <span>Discount</span>
+            <strong>
+                - ₹ {{ invoice.discount_amount|floatformat:2 }}
+            </strong>
+        </div>
+
+        <div class="detail-row">
+
+            <span>
+                <strong>Net Amount</strong>
+            </span>
+
+            <strong>
+                ₹ {{ invoice.net_amount|floatformat:2 }}
+            </strong>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

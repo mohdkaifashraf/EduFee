@@ -1,0 +1,199 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>{% block title %}EduFee{% endblock %}</title>
+
+    <link
+        rel="stylesheet"
+        href="{% static 'css/style.css' %}"
+    >
+</head>
+
+<body>
+
+<div class="app-shell">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+
+        <div class="brand">
+            <div class="brand-mark">
+                <span></span>
+            </div>
+
+            <div class="brand-name">
+                Edu<span>Fee</span>
+            </div>
+        </div>
+
+        <nav class="sidebar-nav">
+
+            <a href="{% url 'dashboard' %}" class="nav-item active">
+                <span class="nav-icon">⌂</span>
+                <span>Dashboard</span>
+            </a>
+
+            <div class="nav-section-title">
+                MANAGEMENT
+            </div>
+
+            <a href="#" class="nav-item">
+                <span class="nav-icon">◉</span>
+                <span>Students</span>
+            </a>
+
+            <a 
+                href="{% url 'fee_head_list' %}" 
+                class="nav-item" 
+            > 
+                <span class="nav-icon">₹</span> 
+                <span>Fees</span> 
+            </a>
+
+            <a 
+                href="{% url 'concession_list' %}" 
+                class="nav-item"
+            >
+                <span class="nav-icon">%</span>
+                <span>Concessions</span>
+            </a>
+
+            <a href="{% url 'invoice_list' %}" class="nav-item"> 
+                <span class="nav-icon">▣</span> 
+                <span>Invoices</span> 
+            </a>
+
+            <a href="#" class="nav-item">
+                <span class="nav-icon">↗</span>
+                <span>Payments</span>
+            </a>
+
+            <div class="nav-section-title">
+                FINANCE
+            </div>
+
+            <a href="#" class="nav-item">
+                <span class="nav-icon">⇄</span>
+                <span>Reconciliation</span>
+            </a>
+
+            <a href="#" class="nav-item">
+                <span class="nav-icon">▤</span>
+                <span>Reports</span>
+            </a>
+
+            <div class="nav-section-title">
+                SYSTEM
+            </div>
+
+            <a href="/admin/" class="nav-item">
+                <span class="nav-icon">⚙</span>
+                <span>Administration</span>
+            </a>
+
+        </nav>
+
+        <div class="sidebar-bottom">
+
+            <div class="security-note">
+                <div class="security-icon">✓</div>
+
+                <div>
+                    <strong>Secure system</strong>
+                    <small>Django protected</small>
+                </div>
+            </div>
+
+        </div>
+
+    </aside>
+
+
+    <!-- Main application -->
+    <main class="main-content">
+
+        <!-- Navbar -->
+        <header class="topbar">
+
+            <div>
+                <h1 class="page-title">
+                    {% block page_title %}Dashboard{% endblock %}
+                </h1>
+
+                <p class="page-subtitle">
+                    Manage student fees securely and efficiently.
+                </p>
+            </div>
+
+            <div class="topbar-right">
+
+                <div class="user-info">
+
+                    <div class="user-avatar">
+                        {{ request.user.username|first|upper }}
+                    </div>
+
+                    <div class="user-details">
+                        <strong>
+                            {{ request.user.get_full_name|default:request.user.username }}
+                        </strong>
+
+                        <span>
+                            {% if request.user.is_superuser %}
+                                Administrator
+                            {% else %}
+                                EduFee User
+                            {% endif %}
+                        </span>
+                    </div>
+
+                </div>
+
+                <form method="post" action="{% url 'logout' %}">
+                    {% csrf_token %}
+                    <button type="submit" class="logout-button">Logout</button>
+                </form>
+
+            </div>
+
+        </header>
+
+
+        <!-- Messages -->
+        {% if messages %}
+            <div class="messages-container">
+
+                {% for message in messages %}
+
+                    <div class="alert alert-{{ message.tags }}">
+                        {{ message }}
+                    </div>
+
+                {% endfor %}
+
+            </div>
+        {% endif %}
+
+
+        <!-- Page content -->
+        <section class="content-area">
+
+            {% block content %}
+            {% endblock %}
+
+        </section>
+
+    </main>
+
+</div>
+
+</body>
+</html>

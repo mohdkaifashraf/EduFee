@@ -1,0 +1,233 @@
+{% extends "base.html" %}
+
+{% block title %}Concession Details{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+
+    <div>
+        <h1>Concession Details</h1>
+        <p>
+            Review and manage this concession request.
+        </p>
+    </div>
+
+    <a
+        href="{% url 'concession_list' %}"
+        class="btn btn-secondary"
+    >
+        Back
+    </a>
+
+</div>
+
+
+<div class="detail-grid">
+
+    <div class="card">
+
+        <h2>Student Information</h2>
+
+        <div class="detail-row">
+            <span>Student ID</span>
+            <strong>
+                {{ concession.student.student_id }}
+            </strong>
+        </div>
+
+        <div class="detail-row">
+            <span>Name</span>
+            <strong>
+                {{ concession.student.name }}
+            </strong>
+        </div>
+
+        <div class="detail-row">
+            <span>Course</span>
+            <strong>
+                {{ concession.student.course }}
+            </strong>
+        </div>
+
+        <div class="detail-row">
+            <span>Semester</span>
+            <strong>
+                {{ concession.student.semester }}
+            </strong>
+        </div>
+
+    </div>
+
+
+    <div class="card">
+
+        <h2>Concession</h2>
+
+        <div class="detail-row">
+            <span>Fee Head</span>
+            <strong>
+                {{ concession.fee_component.fee_head.name }}
+            </strong>
+        </div>
+
+        <div class="detail-row">
+            <span>Fee Structure</span>
+            <strong>
+                {{ concession.fee_component.fee_structure.name }}
+            </strong>
+        </div>
+
+        <div class="detail-row">
+            <span>Original Amount</span>
+            <strong>
+                ₹ {{ concession.fee_component.amount|floatformat:2 }}
+            </strong>
+        </div>
+
+        <div class="detail-row">
+            <span>Concession Type</span>
+            <strong>
+                {{ concession.get_concession_type_display }}
+            </strong>
+        </div>
+
+        <div class="detail-row">
+            <span>Concession Value</span>
+            <strong>
+                {% if concession.concession_type == "FIXED" %}
+                    ₹ {{ concession.value|floatformat:2 }}
+                {% else %}
+                    {{ concession.value|floatformat:2 }}%
+                {% endif %}
+            </strong>
+        </div>
+
+        <div class="detail-row">
+            <span>Status</span>
+            <strong>
+                {{ concession.get_status_display }}
+            </strong>
+        </div>
+
+    </div>
+
+
+    <div class="card">
+
+        <h2>Reason</h2>
+
+        <p>
+            {{ concession.reason }}
+        </p>
+
+        <div class="detail-row">
+            <span>Created</span>
+            <strong>
+                {{ concession.created_at|date:"d M Y, h:i A" }}
+            </strong>
+        </div>
+
+        {% if concession.approved_by %}
+
+            <div class="detail-row">
+                <span>Approved By</span>
+                <strong>
+                    {{ concession.approved_by.username }}
+                </strong>
+            </div>
+
+        {% endif %}
+
+        {% if concession.approved_at %}
+
+            <div class="detail-row">
+                <span>Approved At</span>
+                <strong>
+                    {{ concession.approved_at|date:"d M Y, h:i A" }}
+                </strong>
+            </div>
+
+        {% endif %}
+
+    </div>
+
+
+    {% if concession.status == "PENDING" %}
+
+        <div class="card action-card">
+
+            <h2>Review Request</h2>
+
+            <p>
+                This concession is waiting for approval.
+            </p>
+
+            <div class="form-actions">
+
+                <form
+                    method="post"
+                    action="{% url 'concession_approve' concession.pk %}"
+                >
+                    {% csrf_token %}
+
+                    <button
+                        type="submit"
+                        class="btn btn-primary"
+                    >
+                        Approve
+                    </button>
+                </form>
+
+
+                <form
+                    method="post"
+                    action="{% url 'concession_reject' concession.pk %}"
+                >
+                    {% csrf_token %}
+
+                    <button
+                        type="submit"
+                        class="btn btn-danger"
+                    >
+                        Reject
+                    </button>
+                </form>
+
+            </div>
+
+        </div>
+
+    {% elif concession.status == "APPROVED" %}
+
+        <div class="card action-card">
+
+            <h2>Approved</h2>
+
+            <p>
+                This concession has been approved and can be
+                applied during invoice calculation.
+            </p>
+
+            <form
+                method="post"
+                action="{% url 'concession_cancel' concession.pk %}"
+            >
+                {% csrf_token %}
+
+                <button
+                    type="submit"
+                    class="btn btn-danger"
+                >
+                    Cancel Concession
+                </button>
+
+            </form>
+
+        </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

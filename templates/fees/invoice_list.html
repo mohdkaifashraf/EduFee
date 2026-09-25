@@ -1,0 +1,130 @@
+{% extends "base.html" %}
+
+{% block title %}Invoices{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+
+    <div>
+        <h1>Invoices</h1>
+        <p>Manage student fee invoices.</p>
+    </div>
+
+    <a
+        href="{% url 'invoice_create' %}"
+        class="btn btn-primary"
+    >
+        + Create Invoice
+    </a>
+
+</div>
+
+
+<div class="card">
+
+    {% if invoices %}
+
+        <div class="table-wrapper">
+
+            <table class="data-table">
+
+                <thead>
+                    <tr>
+                        <th>Invoice</th>
+                        <th>Student</th>
+                        <th>Fee Structure</th>
+                        <th>Gross</th>
+                        <th>Discount</th>
+                        <th>Net</th>
+                        <th>Due Date</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    {% for invoice in invoices %}
+
+                    <tr>
+
+                        <td>
+                            <a
+                                href="{% url 'invoice_detail' invoice.pk %}"
+                            >
+                                <strong>
+                                    {{ invoice.invoice_number }}
+                                </strong>
+                            </a>
+                        </td>
+
+                        <td>
+                            {{ invoice.student.student_id }}
+                            <br>
+                            <span class="muted">
+                                {{ invoice.student.name }}
+                            </span>
+                        </td>
+
+                        <td>
+                            {{ invoice.fee_structure.name }}
+                        </td>
+
+                        <td>
+                            ₹ {{ invoice.gross_amount|floatformat:2 }}
+                        </td>
+
+                        <td>
+                            ₹ {{ invoice.discount_amount|floatformat:2 }}
+                        </td>
+
+                        <td>
+                            <strong>
+                                ₹ {{ invoice.net_amount|floatformat:2 }}
+                            </strong>
+                        </td>
+
+                        <td>
+                            {{ invoice.due_date|date:"d M Y" }}
+                        </td>
+
+                        <td>
+                            <span class="status-badge status-pending">
+                                {{ invoice.get_status_display }}
+                            </span>
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    {% else %}
+
+        <div class="empty-state">
+
+            <h3>No invoices yet</h3>
+
+            <p>
+                Create the first student invoice.
+            </p>
+
+            <a
+                href="{% url 'invoice_create' %}"
+                class="btn btn-primary"
+            >
+                Create Invoice
+            </a>
+
+        </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

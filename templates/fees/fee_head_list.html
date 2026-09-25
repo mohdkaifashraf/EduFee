@@ -1,0 +1,150 @@
+{% extends "base.html" %}
+
+{% block title %}
+    EduFee | Fee Heads
+{% endblock %}
+
+{% block page_title %}
+    Fee Heads
+{% endblock %}
+
+{% block content %}
+
+<div class="page-toolbar">
+
+    <div>
+        <span class="eyebrow">
+            FEE CONFIGURATION
+        </span>
+
+        <h2>
+            Fee Heads
+        </h2>
+
+        <p>
+            Manage reusable categories of student fees.
+        </p>
+    </div>
+
+    <a
+        href="{% url 'fee_head_create' %}"
+        class="primary-button"
+    >
+        + Add Fee Head
+    </a>
+
+</div>
+
+
+<div class="table-card">
+
+    <div class="table-header">
+
+        <div>
+            <h3>Fee Head Configuration</h3>
+
+            <span>
+                {{ fee_heads|length }}
+                fee head{{ fee_heads|length|pluralize }}
+            </span>
+        </div>
+
+    </div>
+
+
+    {% if fee_heads %}
+
+        <div class="table-wrapper">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+                        <th>Name</th>
+                        <th>Description</th>
+                        <th>Status</th>
+                        <th>Created</th>
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    {% for fee_head in fee_heads %}
+
+                        <tr>
+
+                            <td>
+                                <strong>
+                                    {{ fee_head.name }}
+                                </strong>
+                            </td>
+
+                            <td>
+                                {{ fee_head.description|default:"—" }}
+                            </td>
+
+                            <td>
+
+                                {% if fee_head.is_active %}
+
+                                    <span class="status-badge status-active">
+                                        Active
+                                    </span>
+
+                                {% else %}
+
+                                    <span class="status-badge status-inactive">
+                                        Inactive
+                                    </span>
+
+                                {% endif %}
+
+                            </td>
+
+                            <td>
+                                {{ fee_head.created_at|date:"d M Y" }}
+                            </td>
+
+                        </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    {% else %}
+
+        <div class="table-empty">
+
+            <div class="empty-icon">
+                ₹
+            </div>
+
+            <h3>
+                No fee heads configured
+            </h3>
+
+            <p>
+                Create your first fee head to start building
+                fee structures.
+            </p>
+
+            <a
+                href="{% url 'fee_head_create' %}"
+                class="primary-button"
+            >
+                Add Fee Head
+            </a>
+
+        </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

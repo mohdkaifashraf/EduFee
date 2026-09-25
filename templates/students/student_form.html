@@ -1,0 +1,220 @@
+{% extends "base.html" %}
+
+{% block title %}
+    EduFee | {{ page_heading }}
+{% endblock %}
+
+{% block page_title %}
+    {{ page_heading }}
+{% endblock %}
+
+{% block content %}
+
+<div class="form-page">
+
+    <div class="form-page-header">
+
+        <div>
+            <span class="eyebrow">
+                STUDENT MANAGEMENT
+            </span>
+
+            <h2>
+                {{ page_heading }}
+            </h2>
+
+            <p>
+                Enter accurate student information.
+            </p>
+        </div>
+
+        <a
+            href="{% url 'student_list' %}"
+            class="secondary-button"
+        >
+            Back to Students
+        </a>
+
+    </div>
+
+
+    <div class="form-card">
+
+        <form method="post">
+
+            {% csrf_token %}
+
+            {% if form.non_field_errors %}
+
+                <div class="alert alert-error">
+
+                    {{ form.non_field_errors }}
+
+                </div>
+
+            {% endif %}
+
+
+            {% if form.username %}
+
+                <div class="form-section">
+
+                    <h3>
+                        Login Account
+                    </h3>
+
+                    <p>
+                        These credentials will be used by the student
+                        to log in to EduFee.
+                    </p>
+
+                </div>
+
+
+                <div class="form-grid">
+
+                    <div class="form-group">
+
+                        <label for="{{ form.username.id_for_label }}">
+                            Username
+                        </label>
+
+                        {{ form.username }}
+
+                        {% for error in form.username.errors %}
+                            <small class="field-error">
+                                {{ error }}
+                            </small>
+                        {% endfor %}
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="{{ form.email.id_for_label }}">
+                            Email
+                        </label>
+
+                        {{ form.email }}
+
+                        {% for error in form.email.errors %}
+                            <small class="field-error">
+                                {{ error }}
+                            </small>
+                        {% endfor %}
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="{{ form.password1.id_for_label }}">
+                            Password
+                        </label>
+
+                        {{ form.password1 }}
+
+                        {% for error in form.password1.errors %}
+                            <small class="field-error">
+                                {{ error }}
+                            </small>
+                        {% endfor %}
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="{{ form.password2.id_for_label }}">
+                            Confirm Password
+                        </label>
+
+                        {{ form.password2 }}
+
+                        {% for error in form.password2.errors %}
+                            <small class="field-error">
+                                {{ error }}
+                            </small>
+                        {% endfor %}
+
+                    </div>
+
+                </div>
+
+            {% endif %}
+
+
+            <div class="form-section">
+
+                <h3>
+                    Student Information
+                </h3>
+
+                <p>
+                    Academic and contact information.
+                </p>
+
+            </div>
+
+
+            <div class="form-grid">
+
+                {% for field in form %}
+
+                    {% if field.name != "username" and field.name != "email" and field.name != "password1" and field.name != "password2" %}
+
+                        <div class="form-group">
+
+                            <label for="{{ field.id_for_label }}">
+                                {{ field.label }}
+                            </label>
+
+                            {{ field }}
+
+                            {% if field.help_text %}
+                                <small class="field-help">
+                                    {{ field.help_text }}
+                                </small>
+                            {% endif %}
+
+                            {% for error in field.errors %}
+                                <small class="field-error">
+                                    {{ error }}
+                                </small>
+                            {% endfor %}
+
+                        </div>
+
+                    {% endif %}
+
+                {% endfor %}
+
+            </div>
+
+
+            <div class="form-actions">
+
+                <a
+                    href="{% url 'student_list' %}"
+                    class="secondary-button"
+                >
+                    Cancel
+                </a>
+
+                <button
+                    type="submit"
+                    class="primary-button"
+                >
+                    {{ submit_text }}
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}

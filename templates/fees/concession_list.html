@@ -1,0 +1,142 @@
+{% extends "base.html" %}
+
+{% block title %}Concessions{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+    <div>
+        <h1>Concessions</h1>
+        <p>Manage student fee concession requests.</p>
+    </div>
+
+    <a href="{% url 'concession_create' %}" class="btn btn-primary">
+        + New Concession
+    </a>
+</div>
+
+
+<div class="card">
+
+    {% if concessions %}
+
+        <div class="table-wrapper">
+
+            <table class="data-table">
+
+                <thead>
+                    <tr>
+                        <th>Student</th>
+                        <th>Fee Head</th>
+                        <th>Structure</th>
+                        <th>Type</th>
+                        <th>Value</th>
+                        <th>Status</th>
+                        <th>Created</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    {% for concession in concessions %}
+
+                    <tr>
+
+                        <td>
+                            <strong>
+                                {{ concession.student.student_id }}
+                            </strong>
+                            <br>
+                            <span class="muted">
+                                {{ concession.student.name }}
+                            </span>
+                        </td>
+
+                        <td>
+                            {{ concession.fee_component.fee_head.name }}
+                        </td>
+
+                        <td>
+                            {{ concession.fee_component.fee_structure.name }}
+                        </td>
+
+                        <td>
+                            {{ concession.get_concession_type_display }}
+                        </td>
+
+                        <td>
+                            {% if concession.concession_type == "FIXED" %}
+                                ₹ {{ concession.value|floatformat:2 }}
+                            {% else %}
+                                {{ concession.value|floatformat:2 }}%
+                            {% endif %}
+                        </td>
+
+                        <td>
+
+                            {% if concession.status == "PENDING" %}
+                                <span class="status-badge status-pending">
+                                    Pending
+                                </span>
+
+                            {% elif concession.status == "APPROVED" %}
+                                <span class="status-badge status-approved">
+                                    Approved
+                                </span>
+
+                            {% elif concession.status == "REJECTED" %}
+                                <span class="status-badge status-rejected">
+                                    Rejected
+                                </span>
+
+                            {% else %}
+                                <span class="status-badge status-cancelled">
+                                    Cancelled
+                                </span>
+                            {% endif %}
+
+                        </td>
+
+                        <td>
+                            {{ concession.created_at|date:"d M Y" }}
+                        </td>
+
+                        <td>
+                            <a
+                                href="{% url 'concession_detail' concession.pk %}"
+                                class="btn btn-secondary btn-small"
+                            >
+                                View
+                            </a>
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    {% else %}
+
+        <div class="empty-state">
+            <h3>No concessions yet</h3>
+            <p>Create the first concession request.</p>
+
+            <a
+                href="{% url 'concession_create' %}"
+                class="btn btn-primary"
+            >
+                Create Concession
+            </a>
+        </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

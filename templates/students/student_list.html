@@ -1,0 +1,159 @@
+{% extends "base.html" %}
+
+{% block title %}
+    EduFee | Students
+{% endblock %}
+
+{% block page_title %}
+    Students
+{% endblock %}
+
+{% block content %}
+
+<div class="page-toolbar">
+
+    <div>
+        <h2>Student Management</h2>
+
+        <p>
+            Manage student profiles and academic information.
+        </p>
+    </div>
+
+    <a
+        href="{% url 'student_create' %}"
+        class="primary-button"
+    >
+        + Add Student
+    </a>
+
+</div>
+
+
+<div class="table-card">
+
+    <div class="table-header">
+
+        <div>
+            <h3>All Students</h3>
+
+            <span>
+                {{ students|length }} student{{ students|length|pluralize }}
+            </span>
+        </div>
+
+    </div>
+
+
+    {% if students %}
+
+        <div class="table-wrapper">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+                        <th>Student ID</th>
+                        <th>Name</th>
+                        <th>Course</th>
+                        <th>Department</th>
+                        <th>Semester</th>
+                        <th>Academic Year</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    {% for student in students %}
+
+                        <tr>
+
+                            <td>
+                                <strong>
+                                    {{ student.student_id }}
+                                </strong>
+                            </td>
+
+                            <td>
+                                {{ student.name }}
+                            </td>
+
+                            <td>
+                                {{ student.course }}
+                            </td>
+
+                            <td>
+                                {{ student.department }}
+                            </td>
+
+                            <td>
+                                Semester {{ student.semester }}
+                            </td>
+
+                            <td>
+                                {{ student.academic_year }}
+                            </td>
+
+                            <td>
+
+                                <span
+                                    class="status-badge status-{{ student.status|lower }}"
+                                >
+                                    {{ student.get_status_display }}
+                                </span>
+
+                            </td>
+
+                            <td>
+
+                                <a
+                                    href="{% url 'student_detail' student.pk %}"
+                                    class="table-action"
+                                >
+                                    View
+                                </a>
+
+                            </td>
+
+                        </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    {% else %}
+
+        <div class="table-empty">
+
+            <div class="empty-icon">
+                ◉
+            </div>
+
+            <h3>No students yet</h3>
+
+            <p>
+                Start by adding your first student.
+            </p>
+
+            <a
+                href="{% url 'student_create' %}"
+                class="primary-button"
+            >
+                Add Student
+            </a>
+
+        </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

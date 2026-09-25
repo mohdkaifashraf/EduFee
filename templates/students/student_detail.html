@@ -1,0 +1,140 @@
+{% extends "base.html" %}
+
+{% block title %}
+    EduFee | {{ student.name }}
+{% endblock %}
+
+{% block page_title %}
+    Student Profile
+{% endblock %}
+
+{% block content %}
+
+<div class="profile-header">
+
+    <div class="profile-identity">
+
+        <div class="large-avatar">
+            {{ student.name|first|upper }}
+        </div>
+
+        <div>
+
+            <span class="eyebrow">
+                STUDENT PROFILE
+            </span>
+
+            <h2>
+                {{ student.name }}
+            </h2>
+
+            <p>
+                {{ student.student_id }}
+                ·
+                {{ student.course }}
+            </p>
+
+        </div>
+
+    </div>
+
+
+    {% if can_edit %}
+
+        <a
+            href="{% url 'student_update' student.pk %}"
+            class="primary-button"
+        >
+            Edit Student
+        </a>
+
+    {% endif %}
+
+</div>
+
+
+<div class="profile-grid">
+
+    <div class="detail-card">
+
+        <div class="detail-card-header">
+            <h3>Personal Information</h3>
+        </div>
+
+        <div class="detail-list">
+
+            <div>
+                <span>Name</span>
+                <strong>{{ student.name }}</strong>
+            </div>
+
+            <div>
+                <span>Student ID</span>
+                <strong>{{ student.student_id }}</strong>
+            </div>
+
+            <div>
+                <span>Email</span>
+                <strong>{{ student.email }}</strong>
+            </div>
+
+            <div>
+                <span>Phone</span>
+                <strong>
+                    {{ student.phone|default:"Not provided" }}
+                </strong>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="detail-card">
+
+        <div class="detail-card-header">
+            <h3>Academic Information</h3>
+        </div>
+
+        <div class="detail-list">
+
+            <div>
+                <span>Course</span>
+                <strong>{{ student.course }}</strong>
+            </div>
+
+            <div>
+                <span>Department</span>
+                <strong>{{ student.department }}</strong>
+            </div>
+
+            <div>
+                <span>Semester</span>
+                <strong>{{ student.semester }}</strong>
+            </div>
+
+            <div>
+                <span>Academic Year</span>
+                <strong>{{ student.academic_year }}</strong>
+            </div>
+
+            <div>
+                <span>Status</span>
+
+                <strong>
+                    <span
+                        class="status-badge status-{{ student.status|lower }}"
+                    >
+                        {{ student.get_status_display }}
+                    </span>
+                </strong>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

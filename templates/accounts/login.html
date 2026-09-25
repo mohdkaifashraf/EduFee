@@ -1,0 +1,134 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>EduFee | Login</title>
+
+    <link
+        rel="stylesheet"
+        href="{% static 'css/style.css' %}"
+    >
+
+</head>
+
+<body class="auth-page">
+
+<div class="auth-wrapper">
+
+    <div class="auth-brand">
+
+        <div class="brand-mark">
+            <span></span>
+        </div>
+
+        <div class="brand-name">
+            Edu<span>Fee</span>
+        </div>
+
+    </div>
+
+
+    <div class="auth-card">
+
+        <div class="auth-header">
+
+            <span class="eyebrow">
+                FEE MANAGEMENT SYSTEM
+            </span>
+
+            <h1>
+                Welcome back
+            </h1>
+
+            <p>
+                Login to manage student fees and payments.
+            </p>
+
+        </div>
+
+
+        {% if form.errors %}
+
+            <div class="alert alert-error">
+                Username or password is incorrect.
+                Please try again.
+            </div>
+
+        {% endif %}
+
+
+        <form method="post" class="auth-form">
+
+            {% csrf_token %}
+
+            <div class="form-group">
+
+                <label for="id_username">
+                    Username
+                </label>
+
+                <input
+                    type="text"
+                    name="username"
+                    id="id_username"
+                    placeholder="Enter your username"
+                    autocomplete="username"
+                    required
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="id_password">
+                    Password
+                </label>
+
+                <input
+                    type="password"
+                    name="password"
+                    id="id_password"
+                    placeholder="Enter your password"
+                    autocomplete="current-password"
+                    required
+                >
+
+            </div>
+
+
+            <button
+                type="submit"
+                class="primary-button full-width"
+            >
+                Login to EduFee
+            </button>
+
+        </form>
+
+
+        <div class="auth-footer">
+
+            <span>
+                Secure authentication powered by Django
+            </span>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+
+</html>

@@ -1,0 +1,154 @@
+{% extends "base.html" %}
+
+{% block title %}
+    EduFee | Dashboard
+{% endblock %}
+
+{% block page_title %}
+    Dashboard
+{% endblock %}
+
+{% block content %}
+
+<div class="welcome-card">
+
+    <div class="welcome-content">
+
+        <span class="eyebrow">
+            EDUFEE MANAGEMENT SYSTEM
+        </span>
+
+        <h2>
+            Welcome back,
+            <span>
+                {{ request.user.get_full_name|default:request.user.username }}
+            </span>
+        </h2>
+
+        <p>
+            Your fee collection workspace is ready.
+            Manage students, invoices, payments and reconciliation
+            from one place.
+        </p>
+
+        <div class="welcome-actions">
+
+            <a href="#" class="primary-button">
+                Explore EduFee
+            </a>
+
+            <a href="/admin/" class="secondary-button">
+                Open Admin
+            </a>
+
+        </div>
+
+    </div>
+
+    <div class="welcome-decoration">
+
+        <div class="rupee-circle">
+            ₹
+        </div>
+
+        <div class="payment-card">
+            <span>PAYMENT</span>
+            <strong>₹ 45,000</strong>
+            <small>Fee Collection</small>
+        </div>
+
+    </div>
+
+</div>
+
+
+<div class="section-heading">
+
+    <div>
+        <h3>System Overview</h3>
+        <p>
+            Financial modules will appear here as we build the system.
+        </p>
+    </div>
+
+</div>
+
+
+<div class="stats-grid">
+
+    <div class="stat-card">
+
+        <div class="stat-icon green">
+            ₹
+        </div>
+
+        <div>
+            <span>Total Collected</span>
+            <strong>₹ 0</strong>
+        </div>
+
+    </div>
+
+
+    <div class="stat-card">
+
+        <div class="stat-icon blue">
+            ◉
+        </div>
+
+        <div>
+            <span>Total Students</span>
+            <strong>0</strong>
+        </div>
+
+    </div>
+
+
+    <div class="stat-card">
+
+        <div class="stat-icon orange">
+            !
+        </div>
+
+        <div>
+            <span>Outstanding</span>
+            <strong>₹ 0</strong>
+        </div>
+
+    </div>
+
+
+    <div class="stat-card">
+
+        <div class="stat-icon purple">
+            ⇄
+        </div>
+
+        <div>
+            <span>Reconciliation Issues</span>
+            <strong>0</strong>
+        </div>
+
+    </div>
+
+</div>
+
+
+<div class="empty-state">
+
+    <div class="empty-icon">
+        ✓
+    </div>
+
+    <h3>
+        Your EduFee workspace is ready
+    </h3>
+
+    <p>
+        We will build student management, fee structures,
+        invoices, payments and reconciliation step by step.
+    </p>
+
+</div>
+
+{% endblock %}
