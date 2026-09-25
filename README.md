@@ -1,0 +1,2 @@
+# EduFee
+Fees Management Application
